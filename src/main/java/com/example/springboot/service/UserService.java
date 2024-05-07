@@ -5,6 +5,7 @@ import com.example.springboot.model.User;
 import org.springframework.stereotype.Service;
 
 import java.util.List; // Import List
+import java.util.NoSuchElementException;
 
 @Service
 public class UserService {
@@ -20,7 +21,11 @@ public class UserService {
     }
 
     public User getUserById(int id) {
-        return userMapper.getUserById(id);
+        User olduser = userMapper.getUserById(id);
+        if (olduser!=null)
+            return userMapper.getUserById(id);
+        else
+            throw new NoSuchElementException();
     }
 
     public void addUser(User user){
@@ -29,6 +34,8 @@ public class UserService {
     
     public void updateUser(int id, User user){
         User olduser = userMapper.getUserById(id);
+
+
         if(user.getName() == null){
             user.setName(olduser.getName());
         }
